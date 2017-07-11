@@ -4,7 +4,9 @@ import com.stefan.buchalter.domain.report.AReport;
 import com.stefan.buchalter.domain.report.MReport;
 import com.stefan.buchalter.domain.report.QReport;
 import com.stefan.buchalter.persistance.model.PersistentReport;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReportConverter {
 
     public PersistentReport convert(AReport aReport) {

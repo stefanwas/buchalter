@@ -1,8 +1,6 @@
 package com.stefan.buchalter.domain.report;
 
-import com.stefan.buchalter.domain.record.PitRecord;
 import com.stefan.buchalter.domain.record.Record;
-import com.stefan.buchalter.domain.record.VatRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +72,7 @@ public class MReport implements Report {
     public double getTotalNetIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getNetValue())
+                .mapToDouble(record -> record.getNetValue())
                 .sum();
         return total;
     }
@@ -83,7 +81,7 @@ public class MReport implements Report {
     public double getTotalVatIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getVatValue())
+                .mapToDouble(record -> record.getVatValue())
                 .sum();
         return total;
     }
@@ -92,7 +90,7 @@ public class MReport implements Report {
     public double getTotalGrossIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getGrossValue())
+                .mapToDouble(record -> record.getGrossValue())
                 .sum();
         return total;
     }
@@ -100,7 +98,7 @@ public class MReport implements Report {
     @Override
     public double getTotalPitIncome() {
         double total = incomeRecords.stream()
-                .mapToDouble(record -> ((PitRecord) record).getPitValue())
+                .mapToDouble(record -> record.getPitValue())
                 .sum();
         return total;
     }
@@ -109,7 +107,7 @@ public class MReport implements Report {
     public double getTotalNetExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getNetValue())
+                .mapToDouble(record -> record.getNetValue())
                 .sum();
         return total;
     }
@@ -118,7 +116,7 @@ public class MReport implements Report {
     public double getTotalVatExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getVatValue())
+                .mapToDouble(record -> record.getVatValue())
                 .sum();
         return total;
     }
@@ -127,7 +125,7 @@ public class MReport implements Report {
     public double getTotalGrossExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getGrossValue())
+                .mapToDouble(record -> record.getGrossValue())
                 .sum();
         return total;
     }
@@ -136,7 +134,7 @@ public class MReport implements Report {
     public double getTotalVatToDeduct() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
-                .mapToDouble(record -> ((VatRecord) record).getVatDeductionValue())
+                .mapToDouble(record -> record.getVatDeductionValue())
                 .sum();
         return total;
     }
@@ -144,7 +142,7 @@ public class MReport implements Report {
     @Override
     public double getTotalPitExpense() {
         double total = expenseRecords.stream()
-                .mapToDouble(record -> ((PitRecord) record).getPitValue())
+                .mapToDouble(record -> record.getPitValue())
                 .sum();
         return total;
     }

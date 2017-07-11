@@ -2,22 +2,18 @@ package com.stefan.buchalter.persistance.model;
 
 public class PersistentRecord {
 
-    public enum Type {
-        VAT, PIT;
-    }
-
     private Long id;
-    private String code;
+    private Long reportId;
     private String date;
-    private Type type;
+    private String type;
     private String title;
-    private Double pitValue;
     private Double netValue;
     private String vatRate;
     private Double vatValue;
     private Double grossValue;
     private Double vatDeductionRate;
     private Double vatDeductionValue;
+    private Double pitValue;
 
     public Long getId() {
         return id;
@@ -27,12 +23,12 @@ public class PersistentRecord {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public Long getReportId() {
+        return reportId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setReportId(Long reportId) {
+        this.reportId = reportId;
     }
 
     public String getDate() {
@@ -43,11 +39,11 @@ public class PersistentRecord {
         this.date = date;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 

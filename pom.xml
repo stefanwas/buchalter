@@ -8,6 +8,12 @@
     <artifactId>buchalter</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.core.version>4.3.5.RELEASE</spring.core.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
+    </properties>
+
 
     <build>
         <plugins>
@@ -20,8 +26,78 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- usage mvn tomcat7:run -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/training</path>
+                    <httpPort>8080</httpPort>
+                    <httpsPort>8443</httpsPort>
+                    <!--<contextFile>${basedir}/context.xml</contextFile>-->
+                    <keystoreFile>${basedir}/tomcat/certificates/.keystore</keystoreFile>
+                    <keystorePass>wojtek</keystorePass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ======= Spring Core + MVC ===== -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.core.version}</version>
+        </dependency>
+
+        <!-- ====== Logging ======== -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.20</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.20</version>
+        </dependency>
+
+        <!-- ====== DB ======== -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.41</version>
+        </dependency>
+        
+    </dependencies>
 
 </project>
