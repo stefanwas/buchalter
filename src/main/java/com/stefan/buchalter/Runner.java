@@ -24,7 +24,7 @@ public class Runner {
         record.setVatDeductionRate(1.0);
         record.recalculate();
 
-        recordRepository.createRecord(1L, record);
+        recordRepository.createExpenseRecord(1L, record);
     }
 
 }
