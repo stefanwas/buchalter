@@ -11,7 +11,6 @@ public class Model {
 
     private Map<String, Report> reportsByCode = new HashMap<>();
 
-
     public Report getReportByCode(String code) {
         return reportsByCode.get(code);
     }

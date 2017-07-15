@@ -2,21 +2,34 @@ package com.stefan.buchalter.persistance.model;
 
 public class PersistentReport {
 
-    public enum Type {
-        MONTHLY,
-        QUARTERLY,
-        ANNUAL}
-
     private Long id;
+    private Long yReportId;
+    private Long qReportId;
+    private String type;
     private String code;
-    private Type type;
     private int year;
     private int quarter;
     private int month;
-    private Long parentReportId;
+//    private Long parentReportId;
 
     public Long getId() {
         return id;
+    }
+
+    public Long getYReportId() {
+        return yReportId;
+    }
+
+    public void setYReportId(Long yReportId) {
+        this.yReportId = yReportId;
+    }
+
+    public Long getQReportId() {
+        return qReportId;
+    }
+
+    public void setQReportId(Long qReportId) {
+        this.qReportId = qReportId;
     }
 
     public void setId(Long id) {
@@ -31,11 +44,11 @@ public class PersistentReport {
         this.code = code;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -62,12 +75,12 @@ public class PersistentReport {
     public void setMonth(int month) {
         this.month = month;
     }
-
-    public Long getParentReportId() {
-        return parentReportId;
-    }
-
-    public void setParentReportId(Long parentReportId) {
-        this.parentReportId = parentReportId;
-    }
+//
+//    public Long getParentReportId() {
+//        return parentReportId;
+//    }
+//
+//    public void setParentReportId(Long parentReportId) {
+//        this.parentReportId = parentReportId;
+//    }
 }

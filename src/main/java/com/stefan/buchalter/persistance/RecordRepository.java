@@ -28,7 +28,7 @@ public class RecordRepository {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<PersistentRecord> mapper = new RowMapper<PersistentRecord>() {
+    private final RowMapper<PersistentRecord> mapper = new RowMapper<PersistentRecord>() {
 
         @Override
         public PersistentRecord mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -193,23 +193,3 @@ public class RecordRepository {
 
 }
 
-//class RecordMapper implements RowMapper<PersistentRecord> {
-//    @Override
-//    public PersistentRecord mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-//        PersistentRecord record = new PersistentRecord();
-//
-//        record.setId(resultSet.getLong("id"));
-//        record.setReportId(resultSet.getLong("report_id"));
-//        record.setDate(resultSet.getString("date"));
-//        record.setTitle(resultSet.getString("title"));
-//        record.setPitValue(resultSet.getDouble("pit_value"));
-//        record.setNetValue(resultSet.getDouble("net_value"));
-//        record.setVatRate(resultSet.getString("vat_rate"));
-//        record.setVatValue(resultSet.getDouble("vat_value"));
-//        record.setGrossValue(resultSet.getDouble("gross_value"));
-//        record.setVatDeductionRate(resultSet.getDouble("vat_deduct_rate"));
-//        record.setVatDeductionValue(resultSet.getDouble("vat_deduct_value"));
-//
-//        return record;
-//    }
-//}

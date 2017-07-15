@@ -1,11 +1,12 @@
 create database buchalter;
-user buchalter;
+use buchalter;
 
 create table reports (
-	id int(12) not null unique,
-	parent_id int(12),
-	code varchar(16),
+    id int(12) not null unique,
+	y_report_id int(12) not null,
+	q_report_id int(12) not null,
 	type varchar(16),
+	code varchar(16),
 	year int(4),
 	quarter int(4),
 	month int(4),

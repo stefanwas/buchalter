@@ -46,6 +46,14 @@ public class QReport implements Report {
         mReports.removeIf(mReport -> mReport.getCode().equals(code));
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public int getQuarter() {
+        return quarter;
+    }
+
     @Override
     public String getCode() {
         return this.code;
