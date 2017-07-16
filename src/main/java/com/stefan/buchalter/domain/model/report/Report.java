@@ -1,4 +1,4 @@
-package com.stefan.buchalter.domain.report;
+package com.stefan.buchalter.domain.model.report;
 
 public interface Report {
 

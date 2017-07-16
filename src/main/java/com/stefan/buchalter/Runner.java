@@ -1,7 +1,7 @@
 package com.stefan.buchalter;
 
-import com.stefan.buchalter.domain.record.Record;
-import com.stefan.buchalter.persistance.RecordRepository;
+import com.stefan.buchalter.domain.model.record.Record;
+import com.stefan.buchalter.persistance.repositories.RecordRepository;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

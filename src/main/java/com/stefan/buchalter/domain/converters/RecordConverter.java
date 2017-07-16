@@ -1,6 +1,6 @@
-package com.stefan.buchalter.persistance.converters;
+package com.stefan.buchalter.domain.converters;
 
-import com.stefan.buchalter.domain.record.Record;
+import com.stefan.buchalter.domain.model.record.Record;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
 import org.springframework.stereotype.Component;
 

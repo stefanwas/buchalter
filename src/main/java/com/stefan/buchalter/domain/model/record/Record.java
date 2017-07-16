@@ -1,4 +1,4 @@
-package com.stefan.buchalter.domain.record;
+package com.stefan.buchalter.domain.model.record;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,6 @@
-package com.stefan.buchalter.persistance;
+package com.stefan.buchalter.persistance.repositories;
 
-import com.stefan.buchalter.persistance.converters.ReportConverter;
+import com.stefan.buchalter.domain.converters.ReportConverter;
 import com.stefan.buchalter.persistance.model.PersistentReport;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -77,18 +77,22 @@ public class ReportRepository {
         return persistentReport;
     }
 
+    public void deleteReport(long reportId) {
+        jdbcTemplate.update("DELETE FROM reports where id = ?", reportId);
+    }
+
     public void deleteMReport(long mReportId) {
         jdbcTemplate.update("DELETE FROM reports where id = ? and type = 'M", mReportId);
     }
 
-    public void deleteQReportWithAllSubReports(long qReportId) {
-        jdbcTemplate.update("DELETE FROM reports where id = ? and type = 'Q", qReportId);
-        jdbcTemplate.update("DELETE FROM reports where q_report_id = ? and type = 'M", qReportId);
-    }
-
-    public void deleteYReportWithAllSubReports(long yReportId) {
-        jdbcTemplate.update("DELETE FROM reports where id = ?", yReportId);
-        jdbcTemplate.update("DELETE FROM reports where y_report_id = ? and type in ('Q', 'M')", yReportId);
-    }
+//    public void deleteQReportWithAllSubReports(long qReportId) {
+//        jdbcTemplate.update("DELETE FROM reports where id = ? and type = 'Q", qReportId);
+//        jdbcTemplate.update("DELETE FROM reports where q_report_id = ? and type = 'M", qReportId);
+//    }
+//
+//    public void deleteYReportWithAllSubReports(long yReportId) {
+//        jdbcTemplate.update("DELETE FROM reports where id = ?", yReportId);
+//        jdbcTemplate.update("DELETE FROM reports where y_report_id = ? and type in ('Q', 'M')", yReportId);
+//    }
 
 }

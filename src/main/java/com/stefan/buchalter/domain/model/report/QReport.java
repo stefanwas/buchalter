@@ -1,4 +1,4 @@
-package com.stefan.buchalter.domain.report;
+package com.stefan.buchalter.domain.model.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,6 @@ public class QReport implements Report {
         this.year = year;
         this.quarter = quarter;
         this.code = "R" + year + "Q" + quarter;
-
-//        for (int month = 1; month <= 3; month++) {
-//            mReports.add(new MReport(year, (quarter - 1) * 3 + month));
-//        }
     }
 
     public Long getId() {
@@ -36,6 +32,12 @@ public class QReport implements Report {
 
     public List<MReport> getMReports() {
         return mReports;
+    }
+
+    public MReport getMReportByCode(String code) {
+        return mReports.stream()
+                .filter(mReport -> mReport.getCode().equals(code))
+                .findFirst().orElse(null);
     }
 
     public void addMReport(MReport mReport) {

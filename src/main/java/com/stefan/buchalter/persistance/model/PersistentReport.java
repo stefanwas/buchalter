@@ -10,7 +10,6 @@ public class PersistentReport {
     private int year;
     private int quarter;
     private int month;
-//    private Long parentReportId;
 
     public Long getId() {
         return id;
@@ -75,12 +74,5 @@ public class PersistentReport {
     public void setMonth(int month) {
         this.month = month;
     }
-//
-//    public Long getParentReportId() {
-//        return parentReportId;
-//    }
-//
-//    public void setParentReportId(Long parentReportId) {
-//        this.parentReportId = parentReportId;
-//    }
+
 }

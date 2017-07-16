@@ -1,6 +1,6 @@
-package com.stefan.buchalter.domain.report;
+package com.stefan.buchalter.domain.model.report;
 
-import com.stefan.buchalter.domain.record.Record;
+import com.stefan.buchalter.domain.model.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +11,18 @@ import java.util.List;
 public class MReport implements Report {
 
     private Long id;
-    private final String code; //R2017M10
+    private final String code; //R2017Q4M10
     private final int year;
+    private final int quarter;
     private final int month;
     private final List<Record> incomeRecords = new ArrayList<>();
     private final List<Record> expenseRecords = new ArrayList<>();
 
-    public MReport(int year, int month) {
+    public MReport(int year, int quarter, int month) {
         this.year = year;
+        this.quarter = quarter;
         this.month = month;
-        this.code = "R" + year + "M" + month;
+        this.code = "R" + year + "Q" + quarter + "M" + month;
     }
 
     public Long getId() {

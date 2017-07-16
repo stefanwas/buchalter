@@ -1,7 +1,6 @@
-package com.stefan.buchalter.persistance;
+package com.stefan.buchalter.persistance.repositories;
 
-import com.stefan.buchalter.domain.record.Record;
-import com.stefan.buchalter.persistance.converters.RecordConverter;
+import com.stefan.buchalter.domain.converters.RecordConverter;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class RecordRepository {
@@ -50,20 +48,18 @@ public class RecordRepository {
         }
     };
 
-    public long createExpenseRecord(Long reportId, Record record) {
-        long id = createRecord(reportId, record, EXPENSE_RECORDS);
+    public long createExpenseRecord(PersistentRecord persistentRecord) {
+        long id = createRecord(persistentRecord, EXPENSE_RECORDS);
         return id;
     }
 
-    public long createIncomeRecord(Long reportId, Record record) {
-        long id = createRecord(reportId, record, INCOME_RECORDS);
+    public long createIncomeRecord(PersistentRecord persistentRecord) {
+        long id = createRecord(persistentRecord, INCOME_RECORDS);
         return id;
     }
 
-    private long createRecord(Long reportId, Record record, String table) {
-
-        PersistentRecord persistentRecord = converter.convert(record, reportId);
-
+    // TODO return nb of rows instead of id !!!
+    private long createRecord(PersistentRecord persistentRecord, String table) {
         return jdbcTemplate.update(
                 "INSERT INTO ? (" +
                         " report_id," +
@@ -92,17 +88,15 @@ public class RecordRepository {
                 persistentRecord.getVatDeductionValue());
     }
 
-    public void updateExpenseRecord(Long reportId, Record record) {
-        updateRecord(reportId, record, EXPENSE_RECORDS);
+    public void updateExpenseRecord(Long reportId, PersistentRecord persistentRecord) {
+        updateRecord(reportId, persistentRecord, EXPENSE_RECORDS);
     }
 
-    public void updateIncomeRecord(Long reportId, Record record) {
-        updateRecord(reportId, record, INCOME_RECORDS);
+    public void updateIncomeRecord(Long reportId, PersistentRecord persistentRecord) {
+        updateRecord(reportId, persistentRecord, INCOME_RECORDS);
     }
 
-    private void updateRecord(Long reportId, Record record, String tableName) {
-        PersistentRecord persistentRecord = converter.convert(record, reportId);
-
+    private void updateRecord(Long reportId, PersistentRecord persistentRecord, String tableName) {
         int id = jdbcTemplate.update(
                 "UPDATE ? SET" +
                 " id = ?," +
@@ -145,17 +139,17 @@ public class RecordRepository {
         jdbcTemplate.update("DELETE FROM ? WHERE id = ?", tableName, recordId);
     }
 
-    public List<Record> getAllExpenseRecordsForReport(long reportId) {
-        List<Record> records = getAllRecordsForReport(reportId, EXPENSE_RECORDS);
+    public List<PersistentRecord> getAllExpenseRecordsForReport(long reportId) {
+        List<PersistentRecord> records = getAllRecordsForReport(reportId, EXPENSE_RECORDS);
         return records;
     }
 
-    public List<Record> getAllIncomeRecordsForReport(long reportId) {
-        List<Record> records = getAllRecordsForReport(reportId, INCOME_RECORDS);
+    public List<PersistentRecord> getAllIncomeRecordsForReport(long reportId) {
+        List<PersistentRecord> records = getAllRecordsForReport(reportId, INCOME_RECORDS);
         return records;
     }
 
-    private List<Record> getAllRecordsForReport(long reportId, String tableName) {
+    private List<PersistentRecord> getAllRecordsForReport(long reportId, String tableName) {
         String query = "SELECT" +
                 " report_id," +
                 " id," +
@@ -172,11 +166,7 @@ public class RecordRepository {
                 " FROM ?" +
                 " WHERE report_id = ?";
 
-        List<PersistentRecord> persistentRecords = jdbcTemplate.query(query, new Object[]{tableName, reportId}, mapper);
-
-        return persistentRecords.stream()
-                .map(converter::convert)
-                .collect(Collectors.toList());
+        return jdbcTemplate.query(query, new Object[]{tableName, reportId}, mapper);
     }
 
     public void deleteAllExpenseRecordsForReport(long reportId) {
