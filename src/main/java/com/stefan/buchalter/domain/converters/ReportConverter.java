@@ -20,8 +20,9 @@ public class ReportConverter {
         return persistentReport;
     }
 
-    public PersistentReport convert(QReport qReport) {
+    public PersistentReport convert(long yReportId, QReport qReport) {
         PersistentReport persistentReport = new PersistentReport();
+        persistentReport.setYReportId(yReportId);
         persistentReport.setYear(qReport.getYear());
         persistentReport.setQuarter(qReport.getQuarter());
         persistentReport.setCode(qReport.getCode());
@@ -29,8 +30,9 @@ public class ReportConverter {
         return persistentReport;
     }
 
-    public PersistentReport convert(MReport mReport) {
+    public PersistentReport convert(long qReportId, MReport mReport) {
         PersistentReport persistentReport = new PersistentReport();
+        persistentReport.setQReportId(qReportId);
         persistentReport.setYear(mReport.getYear());
         persistentReport.setQuarter(mReport.getQuarter());
         persistentReport.setMonth(mReport.getMonth());

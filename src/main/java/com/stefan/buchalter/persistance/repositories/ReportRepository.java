@@ -31,15 +31,15 @@ public class ReportRepository {
             persistentReport.setQReportId(rs.getLong("q_report_id"));
             persistentReport.setType(rs.getString("type"));
             persistentReport.setCode(rs.getString("code"));
-            persistentReport.setCode(rs.getString("year"));
-            persistentReport.setCode(rs.getString("quarter"));
-            persistentReport.setCode(rs.getString("month"));
+            persistentReport.setYear(rs.getInt("year"));
+            persistentReport.setQuarter(rs.getInt("quarter"));
+            persistentReport.setMonth(rs.getInt("month"));
 
             return persistentReport;
         }
     };
 
-    public long createReport(PersistentReport report) {
+    public long createReport(PersistentReport persistentReport) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
             @Override
@@ -47,13 +47,13 @@ public class ReportRepository {
                 PreparedStatement ps = connection.prepareStatement(
                         "INSERT INTO reports (y_report_id, q_report_id, type, code, year, quarter, month) values (?, ?, ?, ?, ?, ?, ?)",
                         new String[] {"id"});
-                ps.setLong(1, report.getYReportId());
-                ps.setLong(2, report.getQReportId());
-                ps.setString(3, report.getType());
-                ps.setString(4, report.getCode());
-                ps.setInt(5, report.getYear());
-                ps.setInt(6, report.getQuarter());
-                ps.setInt(7, report.getMonth());
+                ps.setLong(1, persistentReport.getYReportId() != null ? persistentReport.getYReportId() : 0);
+                ps.setLong(2, persistentReport.getQReportId() != null ? persistentReport.getQReportId() : 0);
+                ps.setString(3, persistentReport.getType());
+                ps.setString(4, persistentReport.getCode());
+                ps.setInt(5, persistentReport.getYear());
+                ps.setInt(6, persistentReport.getQuarter());
+                ps.setInt(7, persistentReport.getMonth());
                 return ps;
             }
         };
@@ -69,9 +69,7 @@ public class ReportRepository {
     }
 
     public PersistentReport readReport(long reportId) {
-        String query = "SELECT id, y_report_id, q_report_id, type, code, year, quarter, month FROM reports WHERE id = ?";
-        PersistentReport persistentReport = jdbcTemplate.queryForObject(query, new Object[]{reportId}, mapper);
-        return persistentReport;
+        return null;
     }
 
     public PersistentReport readReportByCode(String yReportCode) {
@@ -81,12 +79,18 @@ public class ReportRepository {
     }
 
     public void deleteReport(long reportId) {
-        jdbcTemplate.update("DELETE FROM reports where id = ?", reportId);
+        jdbcTemplate.update("DELETE FROM report where id = ?", reportId);
     }
 
     public List<PersistentReport> getAllQReportsForYReport(Long yReportId) {
         String query = "SELECT id, y_report_id, q_report_id, type, code, year, quarter, month FROM reports WHERE y_report_id = ? and type = 'Q";
         List<PersistentReport> persistentReport = jdbcTemplate.query(query, new Object[] {yReportId}, mapper);
+        return persistentReport;
+    }
+
+    public List<PersistentReport> getAllMReportsForQReport(Long qReportId) {
+        String query = "SELECT id, y_report_id, q_report_id, type, code, year, quarter, month FROM reports WHERE q_report_id = ? and type = 'M";
+        List<PersistentReport> persistentReport = jdbcTemplate.query(query, new Object[] {qReportId}, mapper);
         return persistentReport;
     }
 }

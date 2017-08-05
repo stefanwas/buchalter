@@ -1,8 +1,7 @@
-package com.stefan.buchalter.domain.service.reports;
+package com.stefan.buchalter.domain.service.report;
 
 import com.stefan.buchalter.domain.converters.ReportConverter;
 import com.stefan.buchalter.domain.model.FinanceBook;
-import com.stefan.buchalter.domain.model.report.QReport;
 import com.stefan.buchalter.domain.model.report.YReport;
 import com.stefan.buchalter.persistance.model.PersistentReport;
 import com.stefan.buchalter.persistance.repositories.ReportRepository;

@@ -3,8 +3,8 @@ use buchalter;
 
 create table reports (
     id int(12) not null unique,
-	y_report_id int(12) not null,
-	q_report_id int(12) not null,
+	y_report_id int(12),
+	q_report_id int(12),
 	type varchar(16),
 	code varchar(16),
 	year int(4),

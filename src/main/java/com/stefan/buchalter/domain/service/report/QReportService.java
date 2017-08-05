@@ -1,4 +1,4 @@
-package com.stefan.buchalter.domain.service.reports;
+package com.stefan.buchalter.domain.service.report;
 
 import com.stefan.buchalter.domain.converters.ReportConverter;
 import com.stefan.buchalter.domain.model.FinanceBook;
@@ -27,7 +27,7 @@ public class QReportService {
     public void createQReport(String yReportCode, QReport qReport) {
         YReport yReport = book.getYReportByCode(yReportCode);
 
-        PersistentReport persistentReport = converter.convert(qReport);
+        PersistentReport persistentReport = converter.convert(yReport.getId(), qReport);
         Long qReportId = repository.createReport(persistentReport);
 
         qReport.setId(qReportId);

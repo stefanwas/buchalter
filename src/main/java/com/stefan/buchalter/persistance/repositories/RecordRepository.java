@@ -4,10 +4,15 @@ import com.stefan.buchalter.persistance.model.PersistentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -55,34 +60,33 @@ public class RecordRepository {
         return id;
     }
 
-    // TODO returns nb of rows instead of id !!! fix it
     private long createRecord(PersistentRecord persistentRecord, String table) {
-        return jdbcTemplate.update(
-                "INSERT INTO ? (" +
-                        " report_id," +
-                        " date," +
-                        " type," +
-                        " title," +
-                        " pit_value," +
-                        " net_value," +
-                        " vat_rate," +
-                        " vat_value," +
-                        " gross_value," +
-                        " vat_deduct_rate," +
-                        " vat_deduct_value)" +
-                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                table,
-                persistentRecord.getReportId(),
-                persistentRecord.getDate(),
-                persistentRecord.getType(),
-                persistentRecord.getTitle(),
-                persistentRecord.getPitValue(),
-                persistentRecord.getNetValue(),
-                persistentRecord.getVatRate(),
-                persistentRecord.getVatValue(),
-                persistentRecord.getGrossValue(),
-                persistentRecord.getVatDeductionRate(),
-                persistentRecord.getVatDeductionValue());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                String insertStatement =
+                        "INSERT INTO ? (report_id, date, type, title, pit_value, net_value, vat_rate, vat_value, gross_value, vat_deduct_rate, vat_deduct_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement ps = connection.prepareStatement(insertStatement, new String[] {"id"});
+
+                ps.setLong(1, persistentRecord.getReportId());
+                ps.setString(2, persistentRecord.getDate());
+                ps.setString(3, persistentRecord.getType());
+                ps.setString(4, persistentRecord.getTitle());
+                ps.setDouble(5, persistentRecord.getPitValue());
+                ps.setDouble(6, persistentRecord.getNetValue());
+                ps.setString(7, persistentRecord.getVatRate());
+                ps.setDouble(8, persistentRecord.getVatValue());
+                ps.setDouble(9, persistentRecord.getGrossValue());
+                ps.setDouble(10, persistentRecord.getVatDeductionRate());
+                ps.setDouble(11, persistentRecord.getVatDeductionValue());
+                return ps;
+            }
+        };
+        jdbcTemplate.update(preparedStatementCreator, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     public void updateExpenseRecord(Long reportId, PersistentRecord persistentRecord) {
@@ -93,6 +97,7 @@ public class RecordRepository {
         updateRecord(reportId, persistentRecord, INCOME_RECORDS);
     }
 
+    //TODO check it ???
     private void updateRecord(Long reportId, PersistentRecord persistentRecord, String tableName) {
         int id = jdbcTemplate.update(
                 "UPDATE ? SET" +
@@ -148,8 +153,8 @@ public class RecordRepository {
 
     private List<PersistentRecord> getAllRecordsForReport(long reportId, String tableName) {
         String query = "SELECT" +
-                " report_id," +
                 " id," +
+                " report_id," +
                 " date," +
                 " tape," +
                 " title," +
@@ -175,7 +180,7 @@ public class RecordRepository {
     }
 
     private void deleteAllRecordsForReport(long reportId, String tableName) {
-        jdbcTemplate.update("DELETE FROM ? WHERE report_id = ?", tableName, reportId);
+        jdbcTemplate.update("DELETE FROM " + tableName +" WHERE report_id = ?", reportId);
     }
 
 }

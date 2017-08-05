@@ -81,6 +81,13 @@
             <version>${spring.core.version}</version>
         </dependency>
 
+        <!-- this is required to return json responses -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.6</version>
+        </dependency>
+
         <!-- ====== Logging ======== -->
         <dependency>
             <groupId>org.slf4j</groupId>
