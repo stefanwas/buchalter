@@ -1,9 +1,12 @@
 package com.stefan.buchalter.domain.model.report;
 
+import com.stefan.buchalter.domain.model.ReportCodeUtil;
 import com.stefan.buchalter.domain.model.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.stefan.buchalter.domain.model.ReportCodeUtil.*;
 
 /**
  * Monthly Report
@@ -22,7 +25,7 @@ public class MReport implements Report {
         this.year = year;
         this.quarter = quarter;
         this.month = month;
-        this.code = "R" + year + "Q" + quarter + "M" + month;
+        this.code = createYQMCode(year, quarter, month);
     }
 
     public Long getId() {
@@ -64,6 +67,10 @@ public class MReport implements Report {
 
     public int getYear() {
         return year;
+    }
+
+    public int getQuarter() {
+        return quarter;
     }
 
     public int getMonth() {

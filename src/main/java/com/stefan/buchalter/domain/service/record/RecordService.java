@@ -6,11 +6,18 @@ import com.stefan.buchalter.domain.model.record.Record;
 import com.stefan.buchalter.domain.model.report.MReport;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
 import com.stefan.buchalter.persistance.repositories.RecordRepository;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
+@Service
 public class RecordService {
 
+    @Resource
     private FinanceBook book;
+    @Resource
     private RecordConverter converter;
+    @Resource
     private RecordRepository repository;
 
     public Record addIncomeRecord(String mReportCode, Record record) {

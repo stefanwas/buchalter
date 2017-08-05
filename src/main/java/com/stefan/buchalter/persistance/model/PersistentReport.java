@@ -5,7 +5,7 @@ public class PersistentReport {
     private Long id;
     private Long yReportId;
     private Long qReportId;
-    private String type;
+    private String type;        // Y, Q, M -- TODO use enum
     private String code;
     private int year;
     private int quarter;

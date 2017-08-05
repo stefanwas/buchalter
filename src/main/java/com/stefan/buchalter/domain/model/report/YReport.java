@@ -3,6 +3,8 @@ package com.stefan.buchalter.domain.model.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYCode;
+
 /**
  * Annual Report
  */
@@ -16,7 +18,7 @@ public class YReport implements Report {
 
     public YReport(int year) {
         this.year = year;
-        this.code = "R" + year;
+        this.code = createYCode(year);
     }
 
     public Long getId() {
@@ -47,6 +49,10 @@ public class YReport implements Report {
 
     public void addQReport(QReport qReport) {
         qReports.add(qReport);
+    }
+
+    public void addAllQReports(List<QReport> qReports) {
+        qReports.addAll(qReports);
     }
 
     public void removeQReport(String code) {

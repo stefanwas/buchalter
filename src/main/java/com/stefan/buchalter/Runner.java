@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public class Runner {
     public static void main(String[] args) {
 
+        System.out.println("START");
         ApplicationContext context = new ClassPathXmlApplicationContext("spring/application.xml");
 
         RecordRepository recordRepository = (RecordRepository) context.getBean("recordRepository");
@@ -24,7 +25,8 @@ public class Runner {
         record.setVatDeductionRate(1.0);
         record.recalculate();
 
-        recordRepository.createExpenseRecord(1L, record);
+        System.out.println("END");
+//        recordRepository.createExpenseRecord(1L, record);
     }
 
 }

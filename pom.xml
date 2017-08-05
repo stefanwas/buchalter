@@ -6,7 +6,8 @@
 
     <groupId>com.stefanwas</groupId>
     <artifactId>buchalter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,12 +33,13 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <path>/training</path>
+                    <path>/buchalter</path>
                     <httpPort>8080</httpPort>
-                    <httpsPort>8443</httpsPort>
+
+                    <!--<httpsPort>8443</httpsPort>-->
                     <!--<contextFile>${basedir}/context.xml</contextFile>-->
-                    <keystoreFile>${basedir}/tomcat/certificates/.keystore</keystoreFile>
-                    <keystorePass>wojtek</keystorePass>
+                    <!--<keystoreFile>${basedir}/tomcat/certificates/.keystore</keystoreFile>-->
+                    <!--<keystorePass>wojtek</keystorePass>-->
                 </configuration>
             </plugin>
         </plugins>

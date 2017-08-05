@@ -1,6 +1,5 @@
 package com.stefan.buchalter.persistance.repositories;
 
-import com.stefan.buchalter.domain.converters.RecordConverter;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +20,6 @@ public class RecordRepository {
     private static final String EXPENSE_RECORDS = "expense_records";
     private static final String INCOME_RECORDS = "income_records";
 
-    @Resource
-    private RecordConverter converter;
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -58,7 +55,7 @@ public class RecordRepository {
         return id;
     }
 
-    // TODO return nb of rows instead of id !!!
+    // TODO returns nb of rows instead of id !!! fix it
     private long createRecord(PersistentRecord persistentRecord, String table) {
         return jdbcTemplate.update(
                 "INSERT INTO ? (" +
