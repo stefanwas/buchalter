@@ -1,4 +1,4 @@
-package com.stefan.buchalter.web;
+package com.stefan.buchalter.web.controller;
 
 import com.stefan.buchalter.domain.model.report.MReport;
 import com.stefan.buchalter.domain.model.report.QReport;
@@ -6,6 +6,7 @@ import com.stefan.buchalter.domain.model.report.YReport;
 import com.stefan.buchalter.domain.service.report.MReportService;
 import com.stefan.buchalter.domain.service.report.QReportService;
 import com.stefan.buchalter.domain.service.report.YReportService;
+import com.stefan.buchalter.web.validator.ReportRequestValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +26,9 @@ public class ReportController {
     private QReportService qReportService;
     @Resource
     private MReportService mReportService;
+    @Resource
+    private ReportRequestValidator validator;
+
 
     @RequestMapping(value="/all", method= RequestMethod.GET)
     public List<String> getAllAnnualReportCodes() {
@@ -51,6 +55,7 @@ public class ReportController {
 
     @RequestMapping(value="/year/{year}", method= RequestMethod.PUT)
     public void createYReport(@PathVariable int year) {
+        validator.validateY(year);
         yReportService.createYReport(new YReport(year));
     }
 
@@ -67,6 +72,7 @@ public class ReportController {
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}", method= RequestMethod.PUT)
     public void createQReport(@PathVariable int year, @PathVariable int quarter) {
+        validator.validateYQ(year, quarter);
         qReportService.createQReport(new QReport(year, quarter));
     }
 
@@ -83,6 +89,7 @@ public class ReportController {
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}/month/{month}", method= RequestMethod.PUT)
     public void createMReport(@PathVariable int year, @PathVariable int quarter, @PathVariable int month) {
+        validator.validateYQM(year, quarter, month);
         mReportService.createMReport(new MReport(year, quarter, month));
     }
 

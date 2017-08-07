@@ -1,4 +1,4 @@
-package com.stefan.buchalter.web;
+package com.stefan.buchalter.web.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;

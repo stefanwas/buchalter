@@ -1,4 +1,4 @@
-package com.stefan.buchalter.web;
+package com.stefan.buchalter.web.controller;
 
 import com.stefan.buchalter.domain.model.record.Record;
 import com.stefan.buchalter.domain.service.record.RecordService;
