@@ -52,7 +52,7 @@ public class YReport implements Report {
     }
 
     public void addAllQReports(List<QReport> qReports) {
-        qReports.addAll(qReports);
+        this.qReports.addAll(qReports);
     }
 
     public void removeQReport(String code) {

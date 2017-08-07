@@ -1,9 +1,7 @@
 package com.stefan.buchalter.domain.service.report;
 
 import com.stefan.buchalter.domain.converters.ReportConverter;
-import com.stefan.buchalter.domain.model.FinanceBook;
 import com.stefan.buchalter.domain.model.report.MReport;
-import com.stefan.buchalter.domain.model.report.QReport;
 import com.stefan.buchalter.domain.service.record.RecordService;
 import com.stefan.buchalter.persistance.model.PersistentReport;
 import com.stefan.buchalter.persistance.repositories.ReportRepository;
@@ -13,11 +11,11 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.stefan.buchalter.domain.model.ReportCodeUtil.extractYQCode;
+
 @Service
 public class MReportService {
 
-    @Resource
-    private FinanceBook book;
     @Resource
     private ReportConverter converter;
     @Resource
@@ -26,34 +24,39 @@ public class MReportService {
     private RecordService recordService;
 
 
-    public void createMReport(String qReportCode, MReport mReport) {
-        QReport qReport = book.getQReportByCode(qReportCode);
-
-        PersistentReport persistentReport = converter.convert(qReport.getId(), mReport);
-        Long mReportId = repository.createReport(persistentReport);
-        mReport.setId(mReportId);
-
-        qReport.addMReport(mReport);
+    public long createMReport(MReport mReport) {
+        String qReportCode = extractYQCode(mReport.getCode());
+        PersistentReport persistentQReport = repository.getReportByCode(qReportCode);
+        PersistentReport persistentMReport = converter.convert(persistentQReport.getId(), mReport);
+        Long mReportId = repository.createReport(persistentMReport);
+        return mReportId;
     }
 
-    public void deleteMReport(String qReportCode, String mRecordCode) {
-        QReport qReport = book.getQReportByCode(qReportCode);
-        MReport mReport = book.getMReportByCode(mRecordCode);
+    public List<MReport> getAllMReportsForQReport(long qReportId) {
+        List<PersistentReport> persistentMReports = repository.getAllMReportsForQReport(qReportId);
+        List<MReport> mReports = persistentMReports.stream().map(converter::convertToMReport).collect(Collectors.toList());
 
-        recordService.removeAllIncomeRecordsForMReport(mRecordCode);
-        recordService.removeAllExpenseRecordsForMReport(mRecordCode);
+        for (MReport mReport : mReports) {
+            mReport.addAllIncomeRecords(recordService.getAllIncomeRecordsForMReport(mReport.getCode()));
+            mReport.addAllExpenseRecords(recordService.getAllExpenseRecordsForMReport(mReport.getCode()));
+        }
 
-        repository.deleteReport(mReport.getId());
-
-        qReport.removeMReport(mRecordCode);
-    }
-
-    public List<MReport> getAllMReportsForQReport(String qReportCode) {
-        QReport qReport = book.getQReportByCode(qReportCode);
-        Long qReportId = qReport.getId();
-        List<PersistentReport> persistentReports = repository.getAllMReportsForQReport(qReportId);
-        List<MReport> mReports = persistentReports.stream().map(converter::convertToMReport).collect(Collectors.toList());
         return mReports;
     }
 
+    public void deleteMReportById(long mReportId) {
+        recordService.deleteAllIncomeRecordsForMReport(mReportId);
+        recordService.deleteAllExpenseRecordsForMReport(mReportId);
+
+        repository.deleteReport(mReportId);
+    }
+
+    public void deleteMReportByCode(String mReportCode) {
+        PersistentReport persistentMReport = repository.getReportByCode(mReportCode);
+
+        recordService.deleteAllIncomeRecordsForMReport(persistentMReport.getId());
+        recordService.deleteAllExpenseRecordsForMReport(persistentMReport.getId());
+
+        repository.deleteReport(persistentMReport.getId());
+    }
 }

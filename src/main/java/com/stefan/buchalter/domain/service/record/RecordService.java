@@ -1,78 +1,104 @@
 package com.stefan.buchalter.domain.service.record;
 
 import com.stefan.buchalter.domain.converters.RecordConverter;
-import com.stefan.buchalter.domain.model.FinanceBook;
 import com.stefan.buchalter.domain.model.record.Record;
-import com.stefan.buchalter.domain.model.report.MReport;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
+import com.stefan.buchalter.persistance.model.PersistentReport;
 import com.stefan.buchalter.persistance.repositories.RecordRepository;
+import com.stefan.buchalter.persistance.repositories.ReportRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * Quite consistent - uses only record ids and report codes
+ */
 @Service
 public class RecordService {
 
     @Resource
-    private FinanceBook book;
-    @Resource
     private RecordConverter converter;
     @Resource
-    private RecordRepository repository;
+    private RecordRepository recordRepository;
+    @Resource
+    private ReportRepository reportRepository;
 
-    public Record addIncomeRecord(String mReportCode, Record record) {
-        MReport mReport = book.getMReportByCode(mReportCode);
+    /*** CREATE ***/
 
-        PersistentRecord persistentRecord = converter.convert(record, mReport.getId());
+    public long addIncomeRecord(String mReportCode, Record record) {
+        PersistentReport persistentReport = reportRepository.getReportByCode(mReportCode);
+        PersistentRecord persistentRecord = converter.convert(record, persistentReport.getId());
 
-        Long recordId = repository.createIncomeRecord(persistentRecord);
-        record.setId(recordId);
+        Long recordId = recordRepository.createIncomeRecord(persistentRecord);
+        return recordId;
+    }
 
-        mReport.addIncomeRecord(record);
+    public long addExpenseRecord(String mReportCode, Record record) {
+        PersistentReport persistentReport = reportRepository.getReportByCode(mReportCode);
+        PersistentRecord persistentRecord = converter.convert(record, persistentReport.getId());
+
+        Long recordId = recordRepository.createExpenseRecord(persistentRecord);
+        return recordId;
+    }
+
+    /*** GET ***/
+
+    public Record getIncomeRecord(long recordId) {
+        PersistentRecord persistentRecord = recordRepository.getIncomeRecord(recordId);
+        Record record = converter.convert(persistentRecord);
         return record;
     }
 
-    public void removeIncomeRecord(String mReportCode, Long recordId) {
-        MReport mReport = book.getMReportByCode(mReportCode);
-
-        repository.deleteIncomeRecord(recordId);
-        mReport.removeIncomeRecord(recordId);
-    }
-
-    public void removeAllIncomeRecordsForMReport(String mReportCode) {
-        MReport mReport = book.getMReportByCode(mReportCode);
-
-        repository.deleteAllIncomeRecordsForReport(mReport.getId());
-
-        mReport.removeAllIncomeRecords();
-    }
-
-    public Record addExpenseRecord(String mReportCode, Record record) {
-        MReport mReport = book.getMReportByCode(mReportCode);
-
-        PersistentRecord persistentRecord = converter.convert(record, mReport.getId());
-
-        Long recordId = repository.createExpenseRecord(persistentRecord);
-        record.setId(recordId);
-
-        mReport.addIncomeRecord(record);
+    public Record getExpenseRecord(long recordId) {
+        PersistentRecord persistentRecord = recordRepository.getExpenseRecord(recordId);
+        Record record = converter.convert(persistentRecord);
         return record;
     }
 
-    public void removeExpenseRecord(String mReportCode, Long recordId) {
-        MReport mReport = book.getMReportByCode(mReportCode);
-
-        repository.deleteExpenseRecord(recordId);
-        mReport.removeIncomeRecord(recordId);
+    public List<Record> getAllIncomeRecordsForMReport(String mReportCode) {
+        PersistentReport persistentReport = reportRepository.getReportByCode(mReportCode);
+        List<PersistentRecord> persistentRecords = recordRepository.getAllIncomeRecordsForReport(persistentReport.getId());
+        List<Record> records = persistentRecords.stream().map(converter::convert).collect(Collectors.toList());
+        return records;
     }
 
-    public void removeAllExpenseRecordsForMReport(String mReportCode) {
-        MReport mReport = book.getMReportByCode(mReportCode);
-
-        repository.deleteAllExpenseRecordsForReport(mReport.getId());
-
-        mReport.removeAllIncomeRecords();
+    public List<Record> getAllExpenseRecordsForMReport(String mReportCode) {
+        PersistentReport persistentReport = reportRepository.getReportByCode(mReportCode);
+        List<PersistentRecord> persistentRecords = recordRepository.getAllExpenseRecordsForReport(persistentReport.getId());
+        List<Record> records = persistentRecords.stream().map(converter::convert).collect(Collectors.toList());
+        return records;
     }
 
+    /*** UPDATE ***/
+
+    public void updateIncomeReport(Record record) {
+        PersistentRecord persistentRecord = converter.convert(record, 0L);
+        recordRepository.updateIncomeRecord(persistentRecord);
+    }
+
+    public void updateExpenseReport(Record record) {
+        PersistentRecord persistentRecord = converter.convert(record, 0L);
+        recordRepository.updateExpenseRecord(persistentRecord);
+    }
+
+    /*** DELETE ***/
+
+    public void deleteIncomeRecord(long recordId) {
+        recordRepository.deleteIncomeRecord(recordId);
+    }
+
+    public void deleteAllIncomeRecordsForMReport(long mReportId) {
+        recordRepository.deleteAllIncomeRecordsForReport(mReportId);
+    }
+
+    public void deleteExpenseRecord(long recordId) {
+        recordRepository.deleteExpenseRecord(recordId);
+    }
+
+    public void deleteAllExpenseRecordsForMReport(long mReportId) {
+        recordRepository.deleteAllExpenseRecordsForReport(mReportId);
+    }
 
 }

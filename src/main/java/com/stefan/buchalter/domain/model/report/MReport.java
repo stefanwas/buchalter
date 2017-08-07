@@ -1,12 +1,11 @@
 package com.stefan.buchalter.domain.model.report;
 
-import com.stefan.buchalter.domain.model.ReportCodeUtil;
 import com.stefan.buchalter.domain.model.record.Record;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stefan.buchalter.domain.model.ReportCodeUtil.*;
+import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYQMCode;
 
 /**
  * Monthly Report
@@ -40,6 +39,10 @@ public class MReport implements Report {
         incomeRecords.add(record);
     }
 
+    public void addAllIncomeRecords(List<Record> records) {
+        incomeRecords.addAll(records);
+    }
+
     public void removeIncomeRecord(long id) {
         incomeRecords.removeIf(record -> record.getId().equals(id));
     }
@@ -52,6 +55,9 @@ public class MReport implements Report {
         expenseRecords.add(record);
     }
 
+    public void addAllExpenseRecords(List<Record> records) {
+        expenseRecords.addAll(records);
+    }
     public void removeExpenseRecord(long id) {
         expenseRecords.removeIf(record -> record.getId().equals(id));
     }

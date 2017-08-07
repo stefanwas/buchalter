@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/status")
 public class StatusController {
 
-    @RequestMapping(value="/", method= RequestMethod.GET)
+    @RequestMapping(method= RequestMethod.GET)
     public String status() {
         return "OK!";
     }

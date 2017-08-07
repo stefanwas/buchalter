@@ -48,7 +48,7 @@ public class ReportConverter {
     }
 
     public QReport convertToQReport(PersistentReport persistentReport) {
-        QReport qReport = new QReport(persistentReport.getYear(), persistentReport.getMonth());
+        QReport qReport = new QReport(persistentReport.getYear(), persistentReport.getQuarter());
         qReport.setId(persistentReport.getId());
         return qReport;
 
@@ -57,6 +57,6 @@ public class ReportConverter {
     public MReport convertToMReport(PersistentReport persistentReport) {
         MReport mReport = new MReport(persistentReport.getYear(), persistentReport.getQuarter(), persistentReport.getMonth());
         mReport.setId(persistentReport.getId());
-        return null;
+        return mReport;
     }
 }

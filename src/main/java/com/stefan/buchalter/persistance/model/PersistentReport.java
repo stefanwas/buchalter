@@ -3,8 +3,8 @@ package com.stefan.buchalter.persistance.model;
 public class PersistentReport {
 
     private Long id;
-    private Long yReportId;
-    private Long qReportId;
+    private Long yReportId;     // filled for Q reports only
+    private Long qReportId;     // filled for M reports only
     private String type;        // Y, Q, M -- TODO use enum
     private String code;
     private int year;

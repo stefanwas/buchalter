@@ -12,7 +12,7 @@ public class RecordConverter {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public PersistentRecord convert(Record record, Long reportId) {
+    public PersistentRecord convert(Record record, long reportId) {
         PersistentRecord persistentRecord = new PersistentRecord();
 
         persistentRecord.setId(record.getId());
@@ -22,8 +22,9 @@ public class RecordConverter {
         persistentRecord.setDate(formatter.format(record.getDate()));
 
         // VAT
+
         persistentRecord.setNetValue(record.getNetValue());
-        persistentRecord.setVatRate(record.getVatRate().name());
+        persistentRecord.setVatRate(record.getVatRate() != null ? record.getVatRate().name() : null);
         persistentRecord.setVatValue(record.getVatValue());
         persistentRecord.setGrossValue(record.getGrossValue());
         persistentRecord.setVatDeductionRate(record.getVatDeductionRate());
@@ -37,19 +38,25 @@ public class RecordConverter {
 
 
     public Record convert(PersistentRecord persistentRecord) {
-        Record record = new Record();
+
+        Record.Type type = Record.Type.valueOf(persistentRecord.getType());
+        Record record = null;
+        if (type == Record.Type.PIT) {
+            record = new Record(
+                    persistentRecord.getTitle(),
+                    LocalDate.parse(persistentRecord.getDate(), formatter),
+                    persistentRecord.getPitValue());
+        }
+        if (type == Record.Type.VAT) {
+            record = new Record(
+                    persistentRecord.getTitle(),
+                    LocalDate.parse(persistentRecord.getDate(), formatter),
+                    persistentRecord.getNetValue(),
+                    Record.VatRate.valueOf(persistentRecord.getVatRate()),
+                    persistentRecord.getVatDeductionRate());
+        }
 
         record.setId(persistentRecord.getId());
-        record.setTitle(persistentRecord.getTitle());
-        record.setType(Record.Type.valueOf(persistentRecord.getType()));
-        record.setDate(LocalDate.parse(persistentRecord.getDate(), formatter));
-        record.setPitValue(persistentRecord.getPitValue());
-        record.setNetValue(persistentRecord.getNetValue());
-        record.setVatRate(Record.VatRate.valueOf(persistentRecord.getVatRate()));
-        record.setVatValue(persistentRecord.getVatValue());
-        record.setGrossValue(persistentRecord.getGrossValue());
-        record.setVatDeductionRate(persistentRecord.getVatDeductionRate());
-        record.setVatDeductionValue(persistentRecord.getVatDeductionValue());
 
         return record;
     }

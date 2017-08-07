@@ -13,4 +13,12 @@ public class ReportCodeUtil {
     public static String createYQMCode(int year, int quarter, int month) {
         return "R" + year + "Q" + quarter + "M" + month;
     }
+
+    public static String extractYCode(String reportCode) {
+        return reportCode.substring(0, 5);
+    }
+
+    public static String extractYQCode(String reportCode) {
+        return reportCode.substring(0, 7);
+    }
 }

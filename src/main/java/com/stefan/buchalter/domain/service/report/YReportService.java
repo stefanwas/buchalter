@@ -1,7 +1,7 @@
 package com.stefan.buchalter.domain.service.report;
 
 import com.stefan.buchalter.domain.converters.ReportConverter;
-import com.stefan.buchalter.domain.model.FinanceBook;
+import com.stefan.buchalter.domain.model.report.QReport;
 import com.stefan.buchalter.domain.model.report.YReport;
 import com.stefan.buchalter.persistance.model.PersistentReport;
 import com.stefan.buchalter.persistance.repositories.ReportRepository;
@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 public class YReportService {
 
     @Resource
-    private FinanceBook financeBook;
-    @Resource
     private ReportRepository repository;
     @Resource
     private ReportConverter converter;
@@ -24,33 +22,43 @@ public class YReportService {
     private QReportService qReportService;
 
     public List<String> getAllYReportCodes() {
-        List<PersistentReport> persistentReports = repository.readAllReportByType("Y");
+        List<PersistentReport> persistentReports = repository.getAllReportsByType("Y");
         List<String> yReportCodes = persistentReports.stream().map(PersistentReport::getCode).collect(Collectors.toList());
         return yReportCodes;
     }
 
-    public void createYReport(YReport yReport) {
+    public long createYReport(YReport yReport) {
         PersistentReport persistentReport = converter.convert(yReport);
         Long yReportId = repository.createReport(persistentReport);
-        yReport.setId(yReportId);
-
-        financeBook.addYReport(yReport);
+        return  yReportId;
     }
 
-    public YReport getYReport(String yReportCode) {
-        PersistentReport persistentReport = repository.readReportByCode(yReportCode);
+    public YReport getYReportByCode(String yReportCode) {
+        PersistentReport persistentReport = repository.getReportByCode(yReportCode);
         YReport yReport = converter.convertToYReport(persistentReport);
-        yReport.addAllQReports(qReportService.getAllQReportsForYReport(yReportCode));
-        financeBook.addYReport(yReport);
+        List<QReport> qReports = qReportService.getAllQReportsForYReport(yReport.getId());
+        yReport.addAllQReports(qReports);
         return yReport;
     }
 
-    public void deleteYReport(String yReportCode) {
-        YReport yReport = financeBook.getYReportByCode(yReportCode);
+    public YReport getYReportById(long yReportId) {
+        PersistentReport persistentReport = repository.getReportById(yReportId);
+        YReport yReport = converter.convertToYReport(persistentReport);
+        yReport.addAllQReports(qReportService.getAllQReportsForYReport(yReportId));
+        return yReport;
+    }
 
-        yReport.getQReports().forEach(qReport -> qReportService.deleteQReport(yReportCode, qReport.getCode()));
-        repository.deleteReport(yReport.getId());
+    public void deleteYReportByCode(String yReportCode) {
+        PersistentReport persistentYReport = repository.getReportByCode(yReportCode);
+        List<PersistentReport> persistentQReports = repository.getAllQReportsForYReport(persistentYReport.getId());
+        persistentQReports.forEach(qReport -> qReportService.deleteQReportById(qReport.getId()));
+        repository.deleteReport(persistentYReport.getId());
+    }
 
-        financeBook.removeYReport(yReportCode);
+    public void deleteYReportById(long yReportId) {
+        List<PersistentReport> persistentQReports = repository.getAllQReportsForYReport(yReportId);
+        persistentQReports.forEach(qReport -> qReportService.deleteQReportById(qReport.getId()));
+        repository.deleteReport(yReportId);
+
     }
 }
