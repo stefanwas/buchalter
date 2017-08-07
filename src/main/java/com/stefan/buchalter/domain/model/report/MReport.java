@@ -51,6 +51,10 @@ public class MReport implements Report {
         incomeRecords.clear();
     }
 
+    public List<Record> getIncomeRecords() {
+        return incomeRecords;
+    }
+
     public void addExpenseRecord(Record record) {
         expenseRecords.add(record);
     }
@@ -64,6 +68,10 @@ public class MReport implements Report {
 
     public void removeAllExpenseRecords() {
         expenseRecords.clear();
+    }
+
+    public List<Record> getExpenseRecords() {
+        return expenseRecords;
     }
 
     @Override

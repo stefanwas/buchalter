@@ -1,7 +1,10 @@
 package com.stefan.buchalter.domain.model.record;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.time.LocalDate;
 
+@JsonDeserialize(using = RecordDeserializer.class)
 public class Record {
 
     public enum Type {

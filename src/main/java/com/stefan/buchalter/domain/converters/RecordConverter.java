@@ -1,16 +1,14 @@
 package com.stefan.buchalter.domain.converters;
 
+import com.stefan.buchalter.common.DateUtil;
 import com.stefan.buchalter.domain.model.record.Record;
 import com.stefan.buchalter.persistance.model.PersistentRecord;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Component
 public class RecordConverter {
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public PersistentRecord convert(Record record, long reportId) {
         PersistentRecord persistentRecord = new PersistentRecord();
@@ -19,7 +17,7 @@ public class RecordConverter {
         persistentRecord.setReportId(reportId);
         persistentRecord.setType(record.getType().name());
         persistentRecord.setTitle(record.getTitle());
-        persistentRecord.setDate(formatter.format(record.getDate()));
+        persistentRecord.setDate(DateUtil.format(record.getDate()));
 
         // VAT
 
@@ -44,13 +42,13 @@ public class RecordConverter {
         if (type == Record.Type.PIT) {
             record = new Record(
                     persistentRecord.getTitle(),
-                    LocalDate.parse(persistentRecord.getDate(), formatter),
+                    DateUtil.parse(persistentRecord.getDate()),
                     persistentRecord.getPitValue());
         }
         if (type == Record.Type.VAT) {
             record = new Record(
                     persistentRecord.getTitle(),
-                    LocalDate.parse(persistentRecord.getDate(), formatter),
+                    LocalDate.parse(persistentRecord.getDate()),
                     persistentRecord.getNetValue(),
                     Record.VatRate.valueOf(persistentRecord.getVatRate()),
                     persistentRecord.getVatDeductionRate());

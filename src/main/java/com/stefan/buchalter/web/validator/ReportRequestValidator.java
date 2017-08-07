@@ -15,8 +15,8 @@ public class ReportRequestValidator {
         validateQuarter(quarter);
     }
 
-    public void validateYQM(int yera, int quarter, int month) {
-        validateYear(yera);
+    public void validateYQM(int year, int quarter, int month) {
+        validateYear(year);
         validateQuarter(quarter);
         validateMonth(month);
         validateMonthForQuarter(quarter, month);

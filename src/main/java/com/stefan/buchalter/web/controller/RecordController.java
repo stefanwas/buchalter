@@ -1,11 +1,9 @@
 package com.stefan.buchalter.web.controller;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.stefan.buchalter.domain.model.record.Record;
 import com.stefan.buchalter.domain.service.record.RecordService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,24 +17,24 @@ public class RecordController {
     //TODO implement getExpenseReportByID
 
     @RequestMapping(value="/expense", method= RequestMethod.PUT)
-    public long addExpenseRecord(@RequestParam String mReportCode, Record record) {
+    public long addExpenseRecord(@RequestParam String mReportCode, @RequestBody Record record) {
         Long recordId = recordService.addExpenseRecord(mReportCode, record);
         return recordId;
     }
 
     @RequestMapping(value="/income", method= RequestMethod.PUT)
-    public long addIncomeRecord(@RequestParam String mReportCode, Record record) {
+    public long addIncomeRecord(@RequestParam String mReportCode, @RequestBody Record record) {
         Long recordId = recordService.addIncomeRecord(mReportCode, record);
         return recordId;
     }
 
     @RequestMapping(value="/expense", method= RequestMethod.POST)
-    public void updateExpenseReport(Record record) {
+    public void updateExpenseReport(@RequestBody Record record) {
         recordService.updateExpenseReport(record);
     }
 
     @RequestMapping(value="/income", method= RequestMethod.POST)
-    public void updateIncomeReport(Record record) {
+    public void updateIncomeReport(@RequestBody Record record) {
         recordService.updateIncomeReport(record);
     }
 

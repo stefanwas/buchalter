@@ -91,8 +91,8 @@ public class RecordRepository {
                 PreparedStatement ps = connection.prepareStatement(insertStatement, new String[] {"id"});
 
                 ps.setLong(1, persistentRecord.getReportId());
-                ps.setString(2, persistentRecord.getDate());
-                ps.setString(3, persistentRecord.getType());
+                ps.setString(2, persistentRecord.getType());
+                ps.setString(3, persistentRecord.getDate());
                 ps.setString(4, persistentRecord.getTitle());
                 ps.setDouble(5, persistentRecord.getNetValue());
                 ps.setString(6, persistentRecord.getVatRate());
