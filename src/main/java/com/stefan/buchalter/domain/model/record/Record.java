@@ -1,6 +1,7 @@
 package com.stefan.buchalter.domain.model.record;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.stefan.buchalter.web.config.RecordDeserializer;
 
 import java.time.LocalDate;
 

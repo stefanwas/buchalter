@@ -6,15 +6,15 @@ public interface Report {
     String getCode();
 
     // income
-    double getTotalNetIncome();
-    double getTotalVatIncome();
-    double getTotalGrossIncome();
-    double getTotalPitIncome();
+    double calculateTotalNetIncome();
+    double calculateTotalVatIncome();
+    double calculateTotalGrossIncome();
+    double calculateTotalPitIncome();
 
     // expense
-    double getTotalNetExpense();
-    double getTotalVatExpense();
-    double getTotalGrossExpense();
-    double getTotalPitExpense();
-    double getTotalVatToDeduct();
+    double calculateTotalNetExpense();
+    double calculateTotalVatExpense();
+    double calculateTotalGrossExpense();
+    double calculateTotalPitExpense();
+    double calculateTotalVatToDeduct();
 }

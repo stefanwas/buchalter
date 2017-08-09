@@ -92,7 +92,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalNetIncome() {
+    public double calculateTotalNetIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getNetValue)
@@ -101,7 +101,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalVatIncome() {
+    public double calculateTotalVatIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getVatValue)
@@ -110,7 +110,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalGrossIncome() {
+    public double calculateTotalGrossIncome() {
         double total = incomeRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getGrossValue)
@@ -119,7 +119,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalPitIncome() {
+    public double calculateTotalPitIncome() {
         double total = incomeRecords.stream()
                 .mapToDouble(Record::getPitValue)
                 .sum();
@@ -127,7 +127,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalNetExpense() {
+    public double calculateTotalNetExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getNetValue)
@@ -136,7 +136,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalVatExpense() {
+    public double calculateTotalVatExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getVatValue)
@@ -145,7 +145,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalGrossExpense() {
+    public double calculateTotalGrossExpense() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getGrossValue)
@@ -154,7 +154,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalVatToDeduct() {
+    public double calculateTotalVatToDeduct() {
         double total = expenseRecords.stream()
                 .filter(record -> record.getType() == Record.Type.VAT)
                 .mapToDouble(Record::getVatDeductionValue)
@@ -163,7 +163,7 @@ public class MReport implements Report {
     }
 
     @Override
-    public double getTotalPitExpense() {
+    public double calculateTotalPitExpense() {
         double total = expenseRecords.stream()
                 .mapToDouble(Record::getPitValue)
                 .sum();

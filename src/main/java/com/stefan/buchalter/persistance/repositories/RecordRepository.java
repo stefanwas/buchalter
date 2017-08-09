@@ -81,13 +81,13 @@ public class RecordRepository {
 
     private long createRecord(PersistentRecord persistentRecord, String table) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        String[] columnsToInsert = Arrays.copyOfRange(ALL_COLUMNS, 1, ALL_COLUMNS.length);
+        String insertStatement =
+                "INSERT INTO " + table + "(" + String.join(", ", columnsToInsert) + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                String[] columnsToInsert = Arrays.copyOfRange(ALL_COLUMNS, 1, ALL_COLUMNS.length);
-                String insertStatement =
-                        "INSERT INTO " + table + "(" + String.join(", ", columnsToInsert) + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
                 PreparedStatement ps = connection.prepareStatement(insertStatement, new String[] {"id"});
 
                 ps.setLong(1, persistentRecord.getReportId());
@@ -106,8 +106,12 @@ public class RecordRepository {
             }
         };
         jdbcTemplate.update(preparedStatementCreator, keyHolder);
+        long recordId = keyHolder.getKey().longValue();
 
-        return keyHolder.getKey().longValue();
+        LOGGER.debug("Create record. RecordId=[{}].", recordId);
+        LOGGER.trace("Query=[{}]", insertStatement);
+
+        return recordId;
     }
 
     /*** GET ***/
@@ -124,7 +128,12 @@ public class RecordRepository {
 
     private PersistentRecord getRecord(long recordId, String tableName) {
         String query = "SELECT " + String.join(", ", ALL_COLUMNS) + " FROM " + tableName + " WHERE id = ?";
-        return jdbcTemplate.queryForObject(query, new Object[] {recordId}, mapper);
+        PersistentRecord persistentRecord = jdbcTemplate.queryForObject(query, new Object[]{recordId}, mapper);
+
+        LOGGER.debug("Query for single record. RecordId=[{}]. Found=[{}].", recordId, persistentRecord != null);
+        LOGGER.trace("Query=[{}]", query);
+
+        return persistentRecord;
     }
 
     public List<PersistentRecord> getAllExpenseRecordsForReport(long reportId) {
@@ -139,34 +148,29 @@ public class RecordRepository {
 
     private List<PersistentRecord> getAllRecordsForReport(long reportId, String tableName) {
         String query = "SELECT " + String.join(", ", ALL_COLUMNS) + " FROM " + tableName + " WHERE report_id = ?";
-        return jdbcTemplate.query(query, new Object[] {reportId}, mapper);
+        List<PersistentRecord> persistentRecords = jdbcTemplate.query(query, new Object[]{reportId}, mapper);
+
+        LOGGER.debug("Get all records for report. ReportId=[{}]. Records=[{}]", reportId, persistentRecords.size());
+        LOGGER.trace("Query=[{}]", query);
+
+        return persistentRecords;
     }
 
     /*** UPDATE ***/
 
-    public void updateExpenseRecord(PersistentRecord persistentRecord) {
-        updateRecord(persistentRecord, EXPENSE_RECORDS_TABLE);
+    public int updateExpenseRecord(PersistentRecord persistentRecord) {
+        return updateRecord(persistentRecord, EXPENSE_RECORDS_TABLE);
     }
 
-    public void updateIncomeRecord(PersistentRecord persistentRecord) {
-        updateRecord(persistentRecord, INCOME_RECORDS_TABLE);
+    public int updateIncomeRecord(PersistentRecord persistentRecord) {
+        return updateRecord(persistentRecord, INCOME_RECORDS_TABLE);
     }
 
-    private void updateRecord(PersistentRecord persistentRecord, String tableName) {
+    private int updateRecord(PersistentRecord persistentRecord, String tableName) {
         String[] columnsToUpdate = Arrays.copyOfRange(ALL_COLUMNS, 2, ALL_COLUMNS.length);
-        int id = jdbcTemplate.update(
-                "UPDATE " + tableName + " SET " +
-                " type = ?," +
-                " date = ?," +
-                " title = ?," +
-                " net_value = ?," +
-                " vat_rate = ?," +
-                " vat_value = ?," +
-                " gross_value = ?," +
-                " pit_value = ?," +
-                " vat_deduct_rate = ?," +
-                " vat_deduct_value = ?" +
-                " where id = ?",
+        String query = "UPDATE " + tableName + " SET type = ?, date = ?, title = ?, net_value = ?, vat_rate = ?," +
+                " vat_value = ?, gross_value = ?, pit_value = ?, vat_deduct_rate = ?, vat_deduct_value = ? where id = ?";
+        Object params = Arrays.asList(
                 persistentRecord.getType(),
                 persistentRecord.getDate(),
                 persistentRecord.getTitle(),
@@ -178,32 +182,51 @@ public class RecordRepository {
                 persistentRecord.getVatDeductionRate(),
                 persistentRecord.getVatDeductionValue(),
                 persistentRecord.getId());
+
+        int updatedRecords = jdbcTemplate.update(query, params);
+
+        LOGGER.debug("Update record. RecordId=[{}]. Updated records=[{}].", persistentRecord.getId(), updatedRecords);
+        LOGGER.trace("Query=[{}]. Params=[{}].", query, params);
+
+        return updatedRecords;
     }
 
     /*** DELETE ***/
 
-    public void deleteExpenseRecord(long recordId) {
-        deleteRecord(recordId, EXPENSE_RECORDS_TABLE);
+    public int deleteExpenseRecord(long recordId) {
+        return deleteRecord(recordId, EXPENSE_RECORDS_TABLE);
     }
 
-    public void deleteIncomeRecord(long recordId) {
-        deleteRecord(recordId, INCOME_RECORDS_TABLE);
+    public int deleteIncomeRecord(long recordId) {
+        return deleteRecord(recordId, INCOME_RECORDS_TABLE);
     }
 
-    private void deleteRecord(long recordId, String tableName) {
-        jdbcTemplate.update("DELETE FROM " + tableName + " WHERE id = ?", recordId);
+    private int deleteRecord(long recordId, String tableName) {
+        String query = "DELETE FROM " + tableName + " WHERE id = ?";
+        int deletedRecords = jdbcTemplate.update(query, recordId);
+
+        LOGGER.debug("Delete records. RecordId=[{}]. Deleted records=[{}]", recordId, deletedRecords);
+        LOGGER.trace("Query=[{}]", query);
+
+        return deletedRecords;
     }
 
-    public void deleteAllExpenseRecordsForReport(long reportId) {
-        deleteAllRecordsForReport(reportId, EXPENSE_RECORDS_TABLE);
+    public int deleteAllExpenseRecordsForReport(long reportId) {
+        return deleteAllRecordsForReport(reportId, EXPENSE_RECORDS_TABLE);
     }
 
-    public void deleteAllIncomeRecordsForReport(long reportId) {
-        deleteAllRecordsForReport(reportId, INCOME_RECORDS_TABLE);
+    public int deleteAllIncomeRecordsForReport(long reportId) {
+        return deleteAllRecordsForReport(reportId, INCOME_RECORDS_TABLE);
     }
 
-    private void deleteAllRecordsForReport(long reportId, String tableName) {
-        jdbcTemplate.update("DELETE FROM " + tableName +" WHERE report_id = ?", reportId);
+    private int deleteAllRecordsForReport(long reportId, String tableName) {
+        String query = "DELETE FROM " + tableName + " WHERE report_id = ?";
+        int deletedRecords = jdbcTemplate.update(query, reportId);
+
+        LOGGER.debug("Delete all records for Report. ReportId=[{}]. Deleted records=[{}]", reportId, deletedRecords);
+        LOGGER.trace("Query=[{}]", query);
+
+        return deletedRecords;
     }
 
 }

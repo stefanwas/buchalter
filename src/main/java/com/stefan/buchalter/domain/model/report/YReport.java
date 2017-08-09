@@ -60,48 +60,48 @@ public class YReport implements Report {
     }
 
     @Override
-    public double getTotalNetIncome() {
-        return qReports.stream().mapToDouble(QReport::getTotalNetIncome).sum();
+    public double calculateTotalNetIncome() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalNetIncome).sum();
     }
 
     @Override
-    public double getTotalVatIncome() {
-        return qReports.stream().mapToDouble(QReport::getTotalVatIncome).sum();
+    public double calculateTotalVatIncome() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalVatIncome).sum();
     }
 
     @Override
-    public double getTotalGrossIncome() {
-        return qReports.stream().mapToDouble(QReport::getTotalGrossIncome).sum();
+    public double calculateTotalGrossIncome() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalGrossIncome).sum();
     }
 
     @Override
-    public double getTotalPitIncome() {
-        return qReports.stream().mapToDouble(QReport::getTotalPitIncome).sum();
+    public double calculateTotalPitIncome() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalPitIncome).sum();
     }
 
     @Override
-    public double getTotalNetExpense() {
-        return qReports.stream().mapToDouble(QReport::getTotalNetExpense).sum();
+    public double calculateTotalNetExpense() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalNetExpense).sum();
     }
 
     @Override
-    public double getTotalVatExpense() {
-        return qReports.stream().mapToDouble(QReport::getTotalVatExpense).sum();
+    public double calculateTotalVatExpense() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalVatExpense).sum();
     }
 
     @Override
-    public double getTotalGrossExpense() {
-        return qReports.stream().mapToDouble(QReport::getTotalGrossExpense).sum();
+    public double calculateTotalGrossExpense() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalGrossExpense).sum();
     }
 
     @Override
-    public double getTotalPitExpense() {
-        return qReports.stream().mapToDouble(QReport::getTotalPitExpense).sum();
+    public double calculateTotalPitExpense() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalPitExpense).sum();
     }
 
     @Override
-    public double getTotalVatToDeduct() {
-        return qReports.stream().mapToDouble(QReport::getTotalVatToDeduct).sum();
+    public double calculateTotalVatToDeduct() {
+        return qReports.stream().mapToDouble(QReport::calculateTotalVatToDeduct).sum();
     }
 
     public String toString() {

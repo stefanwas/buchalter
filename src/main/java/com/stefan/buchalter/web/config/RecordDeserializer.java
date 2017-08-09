@@ -1,15 +1,15 @@
-package com.stefan.buchalter.domain.model.record;
+package com.stefan.buchalter.web.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.stefan.buchalter.common.DateUtil;
+import com.stefan.buchalter.domain.model.record.Record;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-// TODO move this class to web package
 public class RecordDeserializer extends JsonDeserializer<Record> {
 
     @Override
@@ -18,11 +18,20 @@ public class RecordDeserializer extends JsonDeserializer<Record> {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         String type = node.get("type").asText();
         String title = node.get("title").asText();
-        Double pitValue = node.get("pitValue").doubleValue();
-
-
         LocalDate date = DateUtil.parse(node.get("date").asText());
 
-        return new Record(title, date, pitValue);
+        if (Record.Type.PIT.name().equals(type)) {
+            Double pitValue = node.get("pitValue").doubleValue();
+            return new Record(title, date, pitValue);
+        }
+
+        if (Record.Type.VAT.name().equals(type)) {
+            Double netValue = node.get("netValue").doubleValue();
+            String vatRate = node.get("vatRate").asText();
+            Double vatDeductionRate = node.get("vatDeductionRate").asDouble();
+            return new Record(title, date, netValue, Record.VatRate.valueOf(vatRate), vatDeductionRate);
+        }
+
+        throw new IllegalArgumentException("Unknown record type: " + type);
     }
 }
