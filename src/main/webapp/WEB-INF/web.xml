@@ -11,7 +11,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/application.xml</param-value>
+        <param-value>classpath:spring/services.xml, classpath:spring/datasource.xml</param-value>
     </context-param>
 
     <!--&lt;!&ndash; loads Spring Security configuration file &ndash;&gt;-->
