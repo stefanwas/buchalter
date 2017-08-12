@@ -7,6 +7,8 @@ import com.stefan.buchalter.domain.service.report.MReportService;
 import com.stefan.buchalter.domain.service.report.QReportService;
 import com.stefan.buchalter.domain.service.report.YReportService;
 import com.stefan.buchalter.web.validator.ReportRequestValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +22,8 @@ import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYQMCode;
 @RequestMapping("/report")
 public class ReportController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
+
     @Resource
     private YReportService yReportService;
     @Resource
@@ -32,6 +36,7 @@ public class ReportController {
 
     @RequestMapping(value="/all", method= RequestMethod.GET)
     public List<String> getAllAnnualReportCodes() {
+        LOG.info("Get all report codes.");
         return yReportService.getAllYReportCodes();
     }
 
@@ -55,29 +60,36 @@ public class ReportController {
 
     @RequestMapping(value="/year/{year}", method= RequestMethod.PUT)
     public void createYReport(@PathVariable int year) {
+        LOG.info("Create YReport - year={}", year);
         validator.validateY(year);
         yReportService.createYReport(new YReport(year));
     }
 
     @RequestMapping(value="/year/{year}", method= RequestMethod.GET)
     public YReport getYReport(@PathVariable int year) {
+        LOG.info("Get YReport - year={}", year);
         YReport yReport = yReportService.getYReportByCode(createYCode(year));
         return yReport;
     }
 
     @RequestMapping(value="/year/{year}", method= RequestMethod.DELETE)
     public void deleteYReport(@PathVariable int year) {
+        LOG.info("Delete YReport - year={}", year);
         yReportService.deleteYReportByCode(createYCode(year));
     }
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}", method= RequestMethod.PUT)
     public void createQReport(@PathVariable int year, @PathVariable int quarter) {
+        LOG.info("Create QReport - year={}, quarter={}", year, quarter);
+
         validator.validateYQ(year, quarter);
         qReportService.createQReport(new QReport(year, quarter));
     }
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}", method= RequestMethod.DELETE)
     public void deleteQReport(@PathVariable int year, @PathVariable int quarter) {
+        LOG.info("Delete QReport - year={}, quarter={}", year, quarter);
+
         qReportService.deleteQReportByCode(createYQCode(year, quarter));
     }
 
@@ -89,12 +101,16 @@ public class ReportController {
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}/month/{month}", method= RequestMethod.PUT)
     public void createMReport(@PathVariable int year, @PathVariable int quarter, @PathVariable int month) {
+        LOG.info("Create MReport - year={}, quarter={}, month={}", year, quarter, month);
+
         validator.validateYQM(year, quarter, month);
         mReportService.createMReport(new MReport(year, quarter, month));
     }
 
     @RequestMapping(value="/year/{year}/quarter/{quarter}/month/{month}", method= RequestMethod.DELETE)
     public void deleteMReport(@PathVariable int year, @PathVariable int quarter, @PathVariable int month) {
+        LOG.info("Delete MReport - year={}, quarter={}, month={}", year, quarter, month);
+
         mReportService.deleteMReportByCode(createYQMCode(year, quarter, month));
     }
 }

@@ -152,4 +152,10 @@ public class Record {
 //    public void setVatDeductionValue(Double vatDeductionValue) {
 //        this.vatDeductionValue = vatDeductionValue;
 //    }
+
+    @Override
+    public String toString() {
+        return "Record {ID=" + id + "|" + title + "|" +  date + "|" + type + "|N=" + netValue
+                + "|VAT_R=" + vatRate + "|G=" + grossValue + "|PIT=" + pitValue + "}";
+    }
 }
