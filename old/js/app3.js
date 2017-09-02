@@ -80,7 +80,7 @@ var contacts = [
   {key: 3, name: "Joe"},
 ]
 
-var newContact = {name: "", email: "", description: ""}
+var newContact = {name: "test", email: "", description: "hahaha"}
 
 
 /*

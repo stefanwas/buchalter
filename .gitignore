@@ -13,3 +13,5 @@ test-output/
 target/
 
 todo.txt
+/src/main/front/node_modules/
+/src/main/front/yarn.lock

@@ -20,7 +20,6 @@ public class RecordConverter {
         persistentRecord.setDate(DateUtil.format(record.getDate()));
 
         // VAT
-
         persistentRecord.setNetValue(record.getNetValue());
         persistentRecord.setVatRate(record.getVatRate() != null ? record.getVatRate().name() : null);
         persistentRecord.setVatValue(record.getVatValue());

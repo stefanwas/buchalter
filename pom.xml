@@ -34,7 +34,8 @@
                 <version>2.2</version>
                 <configuration>
                     <path>/buchalter</path>
-                    <httpPort>8080</httpPort>
+                    <port>8000</port>
+                    <!--<httpPort>8081</httpPort>-->
 
                     <!--<httpsPort>8443</httpsPort>-->
                     <!--<contextFile>${basedir}/context.xml</contextFile>-->
