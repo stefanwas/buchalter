@@ -22,6 +22,8 @@ import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYQMCode;
 @RequestMapping("/report")
 public class ReportController {
 
+//    private static final String ACCESS_CONTROL = "Access-Control-Allow-Origin";
+
     private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
 
     @Resource
@@ -34,6 +36,7 @@ public class ReportController {
     private ReportRequestValidator validator;
 
 
+    @CrossOrigin
     @RequestMapping(value="/all", method= RequestMethod.GET)
     public List<String> getAllAnnualReportCodes() {
         LOG.info("Get all report codes.");
