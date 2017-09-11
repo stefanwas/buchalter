@@ -3,3 +3,8 @@ img {
     height: 16px;
     padding: 1px;
 }
+
+.standard-btn {
+    min-width: 85px;
+    max-width: 85px;
+}
