@@ -1,17 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import jQuery from 'jquery';
 
-import Reports from './components/Reports.jsx';
 import * as AppAction from './js/AppAction.js';
 
 
+import Header from './components/Header.jsx';
+import ReportSelector from './components/ReportSelector.jsx';
+import IncomeTable from './components/record/IncomeTable.jsx';
 
-ReactDOM.render(<Reports />, document.getElementById('reports'));
+
+ReactDOM.render(<Header />, document.getElementById('reports'));
+ReactDOM.render(<ReportSelector />, document.getElementById('nav-selector'));
+ReactDOM.render(<IncomeTable />, document.getElementById('table'));
 
 
 console.log('Loading all reports...');
 AppAction.loadAllReports();
+AppAction.loadYReport('2016');
 
 
 

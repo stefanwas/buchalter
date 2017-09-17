@@ -28,10 +28,10 @@ export function loadAllReports() {
 }
 
 export function loadYReport(year) {
-        $.ajax({url: "http://localhost:8000/buchalter/report/year/"+year}).then(function(data) {
-            AppDispatcher.dispatch({
-                type: "LOAD_YEAR_REPORT",
-                content: data,
-            });
+    $.ajax({url: "http://localhost:8000/buchalter/report/year/" + year}).then(function(data) {
+        AppDispatcher.dispatch({
+            type: "LOAD_YEAR_REPORT",
+            content: data,
         });
+    });
 }

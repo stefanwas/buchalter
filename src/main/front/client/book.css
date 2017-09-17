@@ -1,3 +1,15 @@
+img {
+    width: 16px;
+    height: 16px;
+    padding: 1px;
+}
+
+.standard-btn {
+    min-width: 85px;
+    max-width: 85px;
+}
+
+/*
 ul {
     list-style-type: none;
     margin: 0;
@@ -13,7 +25,9 @@ li a {
     text-decoration: none;
 }
 
-/* Change the link color on hover */
+*/
+/* Change the link color on hover *//*
+
 li a:hover {
     background-color: #555;
     color: white;
@@ -42,4 +56,4 @@ li:last-child {
 
 #header: {
     background-color: #4CAF50;
-}
+}*/

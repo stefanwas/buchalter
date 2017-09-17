@@ -9,6 +9,8 @@ class ReportStore extends EventEmitter {
   constructor() {
     super();
     this.reports = [];
+    this.yReportCodes = [];
+
 //    $.ajax({
 //        url: "http://localhost:8000/buchalter/report/all"
 //    }).then(function(data) {
@@ -31,12 +33,21 @@ class ReportStore extends EventEmitter {
     }
 
     setYearReport(yReport) {
+        console.log ("SET Y REPORT="+yReport);
         this.yReport = yReport;
         this.emit("change");
     }
 
     getAll() {
         return this.reports;
+    }
+
+    getAllYReports() {
+        return this.yReportCodes;
+    }
+
+    getYReport() {
+        return this.yReport;
     }
 
     createReport(id) {
@@ -70,6 +81,7 @@ class ReportStore extends EventEmitter {
 }
 
 var reportStore = new ReportStore();
+
 AppDispatcher.register(reportStore.handleAction.bind(reportStore)); // what is this???
 
 export default reportStore;

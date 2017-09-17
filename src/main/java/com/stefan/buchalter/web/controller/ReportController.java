@@ -18,11 +18,14 @@ import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYCode;
 import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYQCode;
 import static com.stefan.buchalter.domain.model.ReportCodeUtil.createYQMCode;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/report")
 public class ReportController {
 
 //    private static final String ACCESS_CONTROL = "Access-Control-Allow-Origin";
+
+    // Use web method PUT with id, without id - POST
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
 
@@ -36,14 +39,14 @@ public class ReportController {
     private ReportRequestValidator validator;
 
 
-    @CrossOrigin
+
     @RequestMapping(value="/all", method= RequestMethod.GET)
     public List<String> getAllAnnualReportCodes() {
         LOG.info("Get all report codes.");
         return yReportService.getAllYReportCodes();
     }
 
-    @RequestMapping(method= RequestMethod.PUT)
+    @RequestMapping(method= RequestMethod.POST)
     public Long createReport(
             @RequestParam String type, @RequestParam Integer year, @RequestParam Integer quarter, @RequestParam Integer month) {
 
@@ -61,7 +64,7 @@ public class ReportController {
     }
 
 
-    @RequestMapping(value="/year/{year}", method= RequestMethod.PUT)
+    @RequestMapping(value="/year/{year}", method= RequestMethod.POST)
     public void createYReport(@PathVariable int year) {
         LOG.info("Create YReport - year={}", year);
         validator.validateY(year);
@@ -81,7 +84,7 @@ public class ReportController {
         yReportService.deleteYReportByCode(createYCode(year));
     }
 
-    @RequestMapping(value="/year/{year}/quarter/{quarter}", method= RequestMethod.PUT)
+    @RequestMapping(value="/year/{year}/quarter/{quarter}", method= RequestMethod.POST)
     public void createQReport(@PathVariable int year, @PathVariable int quarter) {
         LOG.info("Create QReport - year={}, quarter={}", year, quarter);
 
@@ -102,7 +105,7 @@ public class ReportController {
 //        return mReport;
 //    }
 
-    @RequestMapping(value="/year/{year}/quarter/{quarter}/month/{month}", method= RequestMethod.PUT)
+    @RequestMapping(value="/year/{year}/quarter/{quarter}/month/{month}", method= RequestMethod.POST)
     public void createMReport(@PathVariable int year, @PathVariable int quarter, @PathVariable int month) {
         LOG.info("Create MReport - year={}, quarter={}, month={}", year, quarter, month);
 
