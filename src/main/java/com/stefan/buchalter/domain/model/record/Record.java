@@ -1,5 +1,6 @@
 package com.stefan.buchalter.domain.model.record;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.stefan.buchalter.web.config.RecordDeserializer;
 
@@ -28,6 +29,7 @@ public class Record {
 
     private Long id;
     private String title;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private Type type;
     private double netValue;
@@ -76,82 +78,41 @@ public class Record {
         return title;
     }
 
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
-
     public LocalDate getDate() {
         return date;
     }
-
-//    public void setDate(LocalDate date) {
-//        this.date = date;
-//    }
 
     public Type getType() {
         return type;
     }
 
-//    public void setType(Type type) {
-//        this.type = type;
-//    }
-
     public double getPitValue() {
         return pitValue;
     }
-
-//    public void setPitValue(double pitValue) {
-//        this.pitValue = pitValue;
-//    }
 
     public double getNetValue() {
         return netValue;
     }
 
-//    public void setNetValue(double netValue) {
-//        this.netValue = netValue;
-//        recalculate();
-//    }
-
     public VatRate getVatRate() {
         return vatRate;
     }
-
-//    public void setVatRate(VatRate vatRate) {
-//        this.vatRate = vatRate;
-//    }
 
     public double getVatDeductionRate() {
         return vatDeductionRate;
     }
 
-//    public void setVatDeductionRate(double vatDeductionRate) {
-//        this.vatDeductionRate = vatDeductionRate;
-//    }
-
     public double getVatValue() {
         return vatValue;
     }
-
-//    public void setVatValue(Double vatValue) {
-//        this.vatValue = vatValue;
-//    }
 
     public double getGrossValue() {
         return grossValue;
     }
 
-//    public void setGrossValue(Double grossValue) {
-//        this.grossValue = grossValue;
-//    }
-
     public double getVatDeductionValue() {
         return vatDeductionValue;
     }
-
-//    public void setVatDeductionValue(Double vatDeductionValue) {
-//        this.vatDeductionValue = vatDeductionValue;
-//    }
 
     @Override
     public String toString() {
