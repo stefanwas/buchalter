@@ -15,7 +15,7 @@ export default class Header extends React.Component {
     }
 
     componentWillMount() {
-        ReportStore.on("change", () => {
+        ReportStore.on("REPORT_LIST_LOADED", () => {
             var allYReportCodes = ReportStore.getAll();
 
             this.setState({

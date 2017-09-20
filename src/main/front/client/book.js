@@ -4,15 +4,9 @@ import jQuery from 'jquery';
 
 import * as AppAction from './js/AppAction.js';
 
+import Book from './components/Book.jsx';
 
-import Header from './components/Header.jsx';
-import ReportSelector from './components/ReportSelector.jsx';
-import IncomeTable from './components/record/IncomeTable.jsx';
-
-
-ReactDOM.render(<Header />, document.getElementById('reports'));
-ReactDOM.render(<ReportSelector />, document.getElementById('nav-selector'));
-ReactDOM.render(<IncomeTable />, document.getElementById('table'));
+ReactDOM.render(<Book />, document.getElementById('book'));
 
 
 console.log('Loading all reports...');

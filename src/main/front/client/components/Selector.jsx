@@ -12,7 +12,7 @@ export default class ReportSelector extends React.Component {
     }
 
     componentWillMount() {
-        ReportStore.on("change", () => {
+        ReportStore.on("YREPORT_LOADED", () => {
             this.setState({
                 yReport: ReportStore.getYReport()
             });

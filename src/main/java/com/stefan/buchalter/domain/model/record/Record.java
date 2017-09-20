@@ -1,7 +1,10 @@
 package com.stefan.buchalter.domain.model.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.stefan.buchalter.web.config.MoneySerializer;
 import com.stefan.buchalter.web.config.RecordDeserializer;
 
 import java.time.LocalDate;
@@ -22,6 +25,7 @@ public class Record {
             this.rate = rate;
         }
 
+        @JsonValue
         public double getRate() {
             return rate;
         }
@@ -32,12 +36,18 @@ public class Record {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private Type type;
+    @JsonSerialize(using = MoneySerializer.class)
     private double netValue;
     private VatRate vatRate;
+    @JsonSerialize(using = MoneySerializer.class)
     private double vatValue;            // no setter
+    @JsonSerialize(using = MoneySerializer.class)
     private double grossValue;          // no setter
+    @JsonSerialize(using = MoneySerializer.class)
     private double pitValue;
+    @JsonSerialize(using = MoneySerializer.class)
     private double vatDeductionRate;
+    @JsonSerialize(using = MoneySerializer.class)
     private double vatDeductionValue;   // no setter
 
     public Record(String title, LocalDate date, double pitValue) {

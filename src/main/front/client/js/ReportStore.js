@@ -1,9 +1,7 @@
 import {EventEmitter} from 'events';
 
-
 import AppDispatcher from './AppDispatcher.js'
 //import AppActionTypes from './AppActionTypes';
-//import AppDispatcher from './AppDispatcher';
 
 class ReportStore extends EventEmitter {
   constructor() {
@@ -20,22 +18,18 @@ class ReportStore extends EventEmitter {
 //    }).fail(function() {
 //      this.reports = [];
 //  });
-//    this.reports = [
-//      { id : 'R2015', name: 'buy milk'},
-//      { id : 'R2016', name: 'learn react'},
-//      { id : 'R2017', name: 'call mike'},
-//    ];
+
   }
     setReports(reports) {
         console.log ("NEW REPORTS="+reports);
         this.reports = reports;
-        this.emit("change");
+        this.emit("REPORT_LIST_LOADED");
     }
 
     setYearReport(yReport) {
         console.log ("SET Y REPORT="+yReport);
         this.yReport = yReport;
-        this.emit("change");
+        this.emit("YREPORT_LOADED");
     }
 
     getAll() {
@@ -48,6 +42,10 @@ class ReportStore extends EventEmitter {
 
     getYReport() {
         return this.yReport;
+    }
+
+    getMReport() {
+        return this.yReport.qreports[0].mreports[0];
     }
 
     createReport(id) {
