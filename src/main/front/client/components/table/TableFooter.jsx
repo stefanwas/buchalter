@@ -3,18 +3,20 @@ import React from 'react';
 export default class TableFooter extends React.Component {
 
     render() {
-    //TODO
+
+        var summary = this.props.summary;
+
         return (
             <tfoot>
                 <tr>
                     <th colSpan="2">RAZEM</th>
-                    <th className="text-right">20000,00 zł</th>
+                    <th className="text-right">{summary.netValue.toFixed(2) } zł</th>
                     <th></th>
-                    <th className="text-right">800,30 zł</th>
-                    <th className="text-right">10000,30 zł</th>
-                    <th className="text-right">8200,00 zł</th>
+                    <th className="text-right">{summary.vatValue.toFixed(2) } zł</th>
+                    <th className="text-right">{summary.grossValue.toFixed(2) } zł</th>
+                    <th className="text-right">{summary.pitValue.toFixed(2) } zł</th>
                     <th></th>
-                    <th className="text-right">2300,00 zł</th>
+                    <th className="text-right">{summary.vatDeductionValue.toFixed(2) } zł</th>
                 </tr>
             </tfoot>
         );
